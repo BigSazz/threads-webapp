@@ -147,7 +147,7 @@
 } */
 
 .account-form_input {
-  @apply border border-dark-4 bg-dark-3 text-light-1 !important;
+  @apply border py-3 border-dark-4 bg-dark-3 text-light-1 !important;
 }
 
 /* Comment Form */
