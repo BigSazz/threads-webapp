@@ -63,17 +63,17 @@
     @apply fixed top-0 z-30 flex w-full items-center justify-between bg-dark-2 px-6 py-3;
   }
 
-  .bottombar {
+  /* .bottombar {
     @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-lg xs: px-7 md:hidden;
-  }
+  } */
 
-  .bottombar_container {
-    @apply flex items-center justify-between gap-3 xs: gap-5;
-  }
+  /* .bottombar_container {
+    @apply flex items-center justify-between gap-3 xs:gap-5;
+  } */
 
-  .bottombar_link {
-    @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm: flex-1 sm:px-2 sm:py-2.5;
-  }
+  /* .bottombar_link {
+    @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
+  } */
 
   /* .leftsidebar {
     @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-dark-4 bg-dark-2 pb-5 pt-28 max-md:hidden;
