@@ -63,7 +63,6 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 			posts,
 			isNext,
 		}
-
 	} catch (error: any) {
 		throw new Error(`Failed to fetch threads: ${error.message}`);
 	}

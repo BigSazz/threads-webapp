@@ -4,12 +4,13 @@
 import ThreadCard from '@/components/cards/ThreadCard';
 import { fetchThreads } from '@/lib/actions/thread.actions';
 import { currentUser } from '@clerk/nextjs';
+import { revalidatePath } from 'next/cache';
 
 async function Home() {
 	const user = await currentUser();
 	const result = await fetchThreads(1, 10);
 
-	// console.log(result);
+	revalidatePath('/');
 
 	const { posts = [], isNext } = result;
 
