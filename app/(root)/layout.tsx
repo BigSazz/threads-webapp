@@ -11,7 +11,7 @@ import Bottombar from '@/components/shared/Bottombar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-	title: 'Threads | Web-App',
+	title: 'ChitChat | Web-App',
 	description: 'A Next.js 13 Web Application for creating Threads',
 };
 

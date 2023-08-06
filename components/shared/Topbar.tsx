@@ -15,7 +15,7 @@ function Topbar() {
 					height={28}
 				/>
 				<p className='text-heading3-bold text-light-1 max-xs:hidden'>
-					Threads | Web
+					ChitChat
 				</p>
 			</Link>
 
