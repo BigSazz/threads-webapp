@@ -18,7 +18,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
 	if (!userInfo?.onboarded) redirect('/onboarding');
 
 	const { _id } = userInfo;
-	const simpleId = _id.toString();
 
 	return (
 		<section>
