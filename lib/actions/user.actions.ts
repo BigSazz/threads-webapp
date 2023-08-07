@@ -70,6 +70,7 @@ export async function fetchUserThreads(userId: string) {
 			.populate({
 				path: 'threads',
 				model: Thread,
+				options: { sort: { createdAt: -1 } },
 				populate: {
 					path: 'children',
 					model: Thread,
@@ -129,11 +130,11 @@ export async function fetchUsers({
 
 		const users = await userQuery.exec();
 
-		const isNext = totalUsersCount > skipAmount * users.length;
+		const isNext = totalUsersCount > skipAmount + users.length;
 
 		return {
 			users,
-			isNext,
+			isNext
 		}
 	} catch (error: any) {
 		throw new Error(`Failed to fetch users: ${error.message}`);
@@ -153,7 +154,9 @@ export async function getActivity(userId: string) {
 		const replies = await Thread.find({ 
 			_id: { $in: childThreadIds },
 			author: { $ne: userId },
-		}).populate({
+		})
+		.sort({ createdAt: 'desc' })
+		.populate({
 			path: 'author',
 			model: User,
 			select: '_id name image'

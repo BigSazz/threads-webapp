@@ -2,13 +2,22 @@
 // import { UserButton } from "@clerk/nextjs";
 
 import ThreadCard from '@/components/cards/ThreadCard';
+import Pagination from '@/components/shared/Pagination';
+
 import { fetchThreads } from '@/lib/actions/thread.actions';
 import { currentUser } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 
-async function Home() {
+async function Home({
+	searchParams,
+}: {
+	searchParams: { [key: string]: string | undefined };
+}) {
 	const user = await currentUser();
-	const result = await fetchThreads(1, 10);
+	const result = await fetchThreads(
+		searchParams.page ? +searchParams.page : 1,
+		20
+	);
 
 	revalidatePath('/');
 
@@ -44,6 +53,12 @@ async function Home() {
 					</>
 				)}
 			</section>
+
+			<Pagination
+				path='/'
+				pageNumber={searchParams?.page ? +searchParams.page : 1}
+				isNext={isNext}
+			/>
 		</>
 	);
 }

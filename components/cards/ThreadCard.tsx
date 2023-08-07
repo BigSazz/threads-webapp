@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import DeleteThread from '../forms/DeleteThread';
+import { getTimeAgoFromNow } from '@/lib/utils';
+
 interface ThreadData {
 	id: string;
 	currentUserId: string;
@@ -61,11 +64,19 @@ const ThreadCard = ({
 					</div>
 
 					<div className='flex w-full flex-col'>
-						<Link className='w-fit' href={`/profile/${author?.id}`}>
-							<h4 className='cursor-pointer text-base-semibold text-light-1'>
-								{author?.name}
-							</h4>
-						</Link>
+						<div className='flex items-center justify-between'>
+							<Link
+								className='w-fit'
+								href={`/profile/${author?.id}`}
+							>
+								<h4 className='cursor-pointer text-base-semibold text-light-1'>
+									{author?.name}
+								</h4>
+							</Link>
+							<p className='text-subtle-medium text-gray-1'>
+								{getTimeAgoFromNow(createdAt)}
+							</p>
+						</div>
 						<p className='mt-2 text-small-regular text-light-2'>
 							{content}
 						</p>
@@ -116,36 +127,41 @@ const ThreadCard = ({
 									</p>
 								</Link>
 							)}
-
-							{!isComment && comments.length > 0 && (
-								<div className='ml-1 mt-3 flex items-center gap-2'>
-									{comments
-										.slice(0, 2)
-										.map((comment, idx) => (
-											<Image
-												key={idx}
-												src={comment.author.image}
-												alt={`user_${idx}`}
-												width={24}
-												height={24}
-												className={`${
-													idx !== 0 && '-ml-5'
-												} rounded-full object-cover`}
-											/>
-										))}
-
-									<Link href={`/thread/${id}`}>
-										<p className='mt-1 text-subtle-medium text-gray-1'>
-											{comments.length} repl
-											{comments.length > 1 ? 'ies' : 'y'}
-										</p>
-									</Link>
-								</div>
-							)}
 						</div>
 					</div>
 				</div>
+
+				<DeleteThread
+					threadId={JSON.stringify(id)}
+					currentUserId={currentUserId}
+					authorId={author.id}
+					parentId={parentId}
+					isComment={isComment}
+				/>
 			</div>
+			{!isComment && comments.length > 0 && (
+				<div className='ml-1 mt-3 flex items-center gap-2'>
+					{comments.slice(0, 2).map((comment, idx) => (
+						<Image
+							key={idx}
+							src={comment.author.image}
+							alt={`user_${idx}`}
+							width={24}
+							height={24}
+							className={`${
+								idx !== 0 && '-ml-5'
+							} rounded-full object-cover`}
+						/>
+					))}
+
+					<Link href={`/thread/${id}`}>
+						<p className='mt-1 text-subtle-medium text-gray-1'>
+							{comments.length} repl
+							{comments.length > 1 ? 'ies' : 'y'}
+						</p>
+					</Link>
+				</div>
+			)}
 		</article>
 	);
 };

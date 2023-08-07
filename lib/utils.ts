@@ -41,3 +41,42 @@ export function formatThreadCount(count: number): string {
     return `${threadCount} ${threadWord}`;
   }
 }
+
+export function getTimeAgoFromNow(date: string) {
+  const currentDate = new Date();
+  const givenDate = new Date(date);
+  const timeDifference = currentDate.getTime() - givenDate.getTime();
+
+  const millisecondsPerSecond = 1000;
+  const millisecondsPerMinute = millisecondsPerSecond * 60;
+  const millisecondsPerHour = millisecondsPerMinute * 60;
+  const millisecondsPerDay = millisecondsPerHour * 24;
+  const millisecondsPerWeek = millisecondsPerDay * 7;
+  const millisecondsPerMonth = millisecondsPerDay * 30; // Approximation: 30 days per month
+  const millisecondsPerYear = millisecondsPerDay * 365; // Approximation: 365 days per year
+
+  if (timeDifference < millisecondsPerSecond) {
+    return 'Just now';
+  } else if (timeDifference < millisecondsPerMinute) {
+    const secondsAgo = Math.floor(timeDifference / millisecondsPerSecond);
+    return `${secondsAgo}s`; // S for seconds
+  } else if (timeDifference < millisecondsPerHour) {
+    const minutesAgo = Math.floor(timeDifference / millisecondsPerMinute);
+    return `${minutesAgo}m`; // M for minutes
+  } else if (timeDifference < millisecondsPerDay) {
+    const hoursAgo = Math.floor(timeDifference / millisecondsPerHour);
+    return `${hoursAgo}h`; // H for hours
+  } else if (timeDifference < millisecondsPerWeek) {
+    const daysAgo = Math.floor(timeDifference / millisecondsPerDay);
+    return `${daysAgo}d`; // D for days
+  } else if (timeDifference < millisecondsPerMonth) {
+    const weeksAgo = Math.floor(timeDifference / millisecondsPerWeek);
+    return `${weeksAgo}w`; // W for weeks
+  } else if (timeDifference < millisecondsPerYear) {
+    const monthsAgo = Math.floor(timeDifference / millisecondsPerMonth);
+    return `${monthsAgo}m`; // M for months
+  } else {
+    const yearsAgo = Math.floor(timeDifference / millisecondsPerYear);
+    return `${yearsAgo}y`; // Y for years
+  }
+}

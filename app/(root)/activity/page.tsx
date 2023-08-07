@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
+import { getTimeAgoFromNow } from '@/lib/utils';
+
 const page = async () => {
 	const user = await currentUser();
 
@@ -14,7 +16,7 @@ const page = async () => {
 
 	const activity = await getActivity(userInfo._id);
 
-	// console.log(activity, 'activity');
+	console.log(activity, 'activity');
 
 	return (
 		<section>
@@ -35,18 +37,23 @@ const page = async () => {
 								href={`/thread/${activity?.parentId}`}
 							>
 								<article className='activity-card'>
-									<Image
-										src={activity?.author?.image}
-										alt='profile picture'
-										width={28}
-										height={28}
-										className='rounded-full object-contain'
-									/>
+									<div className='flex flex-1 items-center gap-2'>
+										<Image
+											src={activity?.author?.image}
+											alt='profile picture'
+											width={28}
+											height={28}
+											className='rounded-full object-contain'
+										/>
+										<p className='!text-small-regular text-light-1'>
+											<span className='mr-1 text-primary-500'>
+												{activity?.author?.name}
+											</span>{' '}
+											replied to your thread
+										</p>
+									</div>
 									<p className='!text-small-regular text-light-1'>
-										<span className='mr-1 text-primary-500'>
-											{activity?.author?.name}
-										</span>{' '}
-										replied to your thread
+										{getTimeAgoFromNow(activity?.createdAt)}
 									</p>
 								</article>
 							</Link>
