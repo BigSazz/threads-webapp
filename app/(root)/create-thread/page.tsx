@@ -2,6 +2,7 @@ import PostThread from '@/components/forms/PostThread';
 import { fetchUser } from '@/lib/actions/user.actions';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+import Head from 'next/head';
 
 async function Page() {
 	const user = await currentUser();
@@ -17,6 +18,9 @@ async function Page() {
 
 	return (
 		<>
+			<Head>
+				<title key='title'>ChitChat | Create Thread</title>
+			</Head>
 			<h1 className='head-text text-left'>Create Thread</h1>
 
 			<PostThread userId={simpleId} />
