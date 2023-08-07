@@ -52,7 +52,7 @@ const page = async () => {
 											replied to your thread
 										</p>
 									</div>
-									<p className='!text-small-regular text-light-1'>
+									<p className='text-subtle-medium text-gray-1'>
 										{getTimeAgoFromNow(activity?.createdAt)}
 									</p>
 								</article>
