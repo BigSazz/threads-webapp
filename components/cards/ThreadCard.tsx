@@ -92,28 +92,55 @@ const ThreadCard = ({
 										className='cursor-pointer object-contain'
 									/>
 								</Link>
-								<Image
+								{/* <Image
 									src='/assets/repost.svg'
 									alt='repost Icon'
 									width={24}
 									height={24}
 									className='cursor-pointer object-contain'
-								/>
-								<Image
+								/> */}
+								{/* <Image
 									src='/assets/share.svg'
 									alt='share Icon'
 									width={24}
 									height={24}
 									className='cursor-pointer object-contain'
-								/>
+								/> */}
 							</div>
 
 							{isComment && comments.length > 0 && (
 								<Link href={`/thread/${id}`}>
 									<p className='mt-1 text-subtle-medium text-gray-1'>
-										{comments.length} replies
+										{comments.length} repl
+										{comments.length > 1 ? 'ies' : 'y'}
 									</p>
 								</Link>
+							)}
+
+							{!isComment && comments.length > 0 && (
+								<div className='ml-1 mt-3 flex items-center gap-2'>
+									{comments
+										.slice(0, 2)
+										.map((comment, idx) => (
+											<Image
+												key={idx}
+												src={comment.author.image}
+												alt={`user_${idx}`}
+												width={24}
+												height={24}
+												className={`${
+													idx !== 0 && '-ml-5'
+												} rounded-full object-cover`}
+											/>
+										))}
+
+									<Link href={`/thread/${id}`}>
+										<p className='mt-1 text-subtle-medium text-gray-1'>
+											{comments.length} repl
+											{comments.length > 1 ? 'ies' : 'y'}
+										</p>
+									</Link>
+								</div>
 							)}
 						</div>
 					</div>
