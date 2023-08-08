@@ -72,7 +72,13 @@ export async function fetchUserThreads(userId: string) {
 				path: 'threads',
 				model: Thread,
 				options: { sort: { createdAt: -1 } },
-				populate: {
+				populate:[ 
+					{
+						path: 'likes',
+						model: User,
+						select: '_id id name image'
+					},
+					{
 					path: 'children',
 					model: Thread,
 					populate: {
@@ -80,7 +86,7 @@ export async function fetchUserThreads(userId: string) {
 						model: User,
 						select: 'id name image'
 					}
-				}
+				}]
 			}).exec();
 
 		return threads;
