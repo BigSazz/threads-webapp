@@ -166,42 +166,44 @@ const ThreadCard = ({
 				/>
 			</div>
 
-			<div className='ml-1 mt-3 flex items-center gap-2'>
-				{!isComment && comments.length > 0 && (
-					<div className='flex gap-2 items-center'>
-						{comments.slice(0, 2).map((comment, idx) => (
-							<Image
-								key={idx}
-								src={comment.author.image}
-								alt={`user_${idx}`}
-								width={24}
-								height={24}
-								className={`${
-									idx !== 0 && '-ml-5'
-								} rounded-full object-cover`}
-							/>
-						))}
+			{!isComment && (
+				<div className='ml-1 mt-3 flex items-center gap-2'>
+					{comments.length > 0 && (
+						<div className='flex gap-2 items-center'>
+							{comments.slice(0, 2).map((comment, idx) => (
+								<Image
+									key={idx}
+									src={comment.author.image}
+									alt={`user_${idx}`}
+									width={24}
+									height={24}
+									className={`${
+										idx !== 0 && '-ml-5'
+									} rounded-full object-cover`}
+								/>
+							))}
 
-						<Link href={`/thread/${id}`}>
-							<p className='mt-1 text-subtle-medium text-gray-1'>
-								{comments.length} repl
-								{comments.length > 1 ? 'ies' : 'y'}
-							</p>
-						</Link>
-					</div>
-				)}
-				{comments.length > 0 && likes.length > 0 && (
-					<p className='mt-1 text-subtle-medium text-gray-1'>
-						{' \u2022 '}
-					</p>
-				)}
+							<Link href={`/thread/${id}`}>
+								<p className='mt-1 text-subtle-medium text-gray-1'>
+									{comments.length} repl
+									{comments.length > 1 ? 'ies' : 'y'}
+								</p>
+							</Link>
+						</div>
+					)}
+					{comments.length > 0 && likes.length > 0 && (
+						<p className='mt-1 text-subtle-medium text-gray-1'>
+							{' \u2022 '}
+						</p>
+					)}
 
-				{likes.length > 0 && (
-					<p className='mt-1 text-subtle-medium text-gray-1'>
-						{likes.length} like{likes.length > 1 ? 's' : ''}
-					</p>
-				)}
-			</div>
+					{likes.length > 0 && (
+						<p className='mt-1 text-subtle-medium text-gray-1'>
+							{likes.length} like{likes.length > 1 ? 's' : ''}
+						</p>
+					)}
+				</div>
+			)}
 		</article>
 	);
 };
