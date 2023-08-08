@@ -39,7 +39,8 @@ export async function updateUser({
 		)
 	
 		if (path === '/profile/edit') {
-			revalidatePath(path);
+			console.log('revalidating path', Boolean(path === '/profile/edit'));
+			revalidatePath('/profile');
 		}
 	} catch (error: any) {
 		throw new Error(`Failed to update user: ${error.message}`);

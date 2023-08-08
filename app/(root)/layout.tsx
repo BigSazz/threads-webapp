@@ -10,6 +10,8 @@ import Bottombar from '@/components/shared/Bottombar';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const revalidate = 0;
+
 export const metadata: Metadata = {
 	title: 'ChitChat | Web-App',
 	description: 'A Next.js 13 Web Application for creating Threads',

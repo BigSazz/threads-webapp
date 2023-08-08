@@ -34,7 +34,7 @@ function DeleteThread({
 			className='cursor-pointer object-contain ml-5'
 			onClick={async () => {
 				await deleteThread(JSON.parse(threadId), pathname);
-				if (!parentId || !isComment) {
+				if (isComment) {
 					router.push('/');
 				}
 			}}

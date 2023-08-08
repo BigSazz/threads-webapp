@@ -8,20 +8,23 @@ import { fetchThreads } from '@/lib/actions/thread.actions';
 import { currentUser } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 
+export const revalidate = 0;
+
 async function Home({
 	searchParams,
 }: {
 	searchParams: { [key: string]: string | undefined };
 }) {
 	const user = await currentUser();
+
 	const result = await fetchThreads(
 		searchParams.page ? +searchParams.page : 1,
 		20
 	);
 
-	revalidatePath('/');
-
 	const { posts = [], isNext } = result;
+
+	revalidatePath('/');
 
 	return (
 		<>
@@ -48,6 +51,7 @@ async function Home({
 								community={post.community}
 								createdAt={post.createdAt}
 								comments={post.children}
+								likes={post.likes}
 							/>
 						))}
 					</>

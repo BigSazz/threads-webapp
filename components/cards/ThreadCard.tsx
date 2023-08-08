@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import DeleteThread from '../forms/DeleteThread';
 import { getTimeAgoFromNow } from '@/lib/utils';
+import LikeThread from '../shared/LikeThread';
 
 interface ThreadData {
 	id: string;
@@ -25,6 +26,11 @@ interface ThreadData {
 			image: string;
 		};
 	}[];
+	likes: {
+		id: string;
+		name: string;
+		image: string;
+	}[];
 	isComment?: boolean;
 }
 
@@ -37,8 +43,10 @@ const ThreadCard = ({
 	community,
 	createdAt,
 	comments,
+	likes,
 	isComment = false,
 }: ThreadData) => {
+	console.log('ThreadCard for likes ============>', likes, currentUserId);
 	return (
 		<article
 			className={`${
@@ -87,12 +95,10 @@ const ThreadCard = ({
 							} mt-5 flex flex-col gap-3`}
 						>
 							<div className='flex gap-3.5'>
-								<Image
-									src='/assets/heart-gray.svg'
-									alt='Heart Icon'
-									width={24}
-									height={24}
-									className='cursor-pointer object-contain'
+								<LikeThread
+									threadId={JSON.stringify(id)}
+									likes={likes}
+									currentUserId={currentUserId}
 								/>
 								<Link href={`/thread/${id}`}>
 									<Image
@@ -119,13 +125,33 @@ const ThreadCard = ({
 								/> */}
 							</div>
 
-							{isComment && comments.length > 0 && (
-								<Link href={`/thread/${id}`}>
-									<p className='mt-1 text-subtle-medium text-gray-1'>
-										{comments.length} repl
-										{comments.length > 1 ? 'ies' : 'y'}
-									</p>
-								</Link>
+							{isComment && (
+								<div className='ml-1 mt-3 flex items-center gap-2'>
+									{comments.length > 0 && (
+										<Link href={`/thread/${id}`}>
+											<p className='mt-1 text-subtle-medium text-gray-1'>
+												{comments.length} repl
+												{comments.length > 1
+													? 'ies'
+													: 'y'}
+											</p>
+										</Link>
+									)}
+
+									{comments.length > 0 &&
+										likes.length > 0 && (
+											<p className='mt-1 text-subtle-medium text-gray-1'>
+												{' \u2022 '}
+											</p>
+										)}
+
+									{likes.length > 0 && (
+										<p className='mt-1 text-subtle-medium text-gray-1'>
+											{likes.length} like
+											{likes.length > 1 ? 's' : ''}
+										</p>
+									)}
+								</div>
 							)}
 						</div>
 					</div>
@@ -160,6 +186,18 @@ const ThreadCard = ({
 							{comments.length > 1 ? 'ies' : 'y'}
 						</p>
 					</Link>
+
+					{comments.length > 0 && likes.length > 0 && (
+						<p className='mt-1 text-subtle-medium text-gray-1'>
+							{' \u2022 '}
+						</p>
+					)}
+
+					{likes.length > 0 && (
+						<p className='mt-1 text-subtle-medium text-gray-1'>
+							{likes.length} like{likes.length > 1 ? 's' : ''}
+						</p>
+					)}
 				</div>
 			)}
 		</article>
