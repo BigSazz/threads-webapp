@@ -8,7 +8,6 @@ import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import Community from "../models/community.model";
 
-
 interface Params {
 	text: string;
 	author: string;
@@ -102,7 +101,7 @@ export async function deleteThread(id: string, path: string): Promise<void> {
 	} catch (error: any) {
 	  throw new Error(`Failed to delete thread: ${error.message}`);
 	}
-  }
+}
 
 export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 	try {
@@ -116,13 +115,21 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 			.skip(skipAmount)
 			.limit(pageSize)
 			.populate({ path: 'author', model: User })
+			.populate({ path: 'likes', model: User })
 			.populate({
 				path: 'children',
-				populate: {
-					path: 'author',
-					model: User,
-					select: '_id name parentId image'
-				}
+				populate: [
+					{
+						path: 'author',
+						model: User,
+						select: '_id name parentId image'
+					},
+					{
+						path: 'likes',
+						model: User,
+						select: '_id id name parentId image'
+					}
+				]
 			})
 
 		const totalPostCount = await Thread.countDocuments({ parentId: {$in: [null, undefined]} });
@@ -130,8 +137,6 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 		const posts = await postQuery.exec();
 
 		const isNext = totalPostCount > skipAmount + posts.length;
-
-		// revalidatePath('/');
 
 		return {
 			posts,
@@ -150,11 +155,13 @@ export async function fetchThreadById(id: string) {
 		// TODO: populate community
 		const thread = await Thread.findById(id)
 			.populate({ path: 'author', model: User, select: '_id id name image' })
+			.populate({ path: 'likes', model: User, select: '_id id name image' })
 			.populate({
 				path: 'children',
 				populate: [
 					{ path: 'author', model: User, select: '_id id name parentId image' },
-					{ path: 'children', model: Thread, populate: { path: 'author', model: User, select: '_id id name parentId image' } },
+					{ path: 'likes', model: User, select: '_id id name parentId image' },
+					{ path: 'children', model: Thread, populate: [{ path: 'author', model: User, select: '_id id name parentId image' }, { path: 'likes', model: User, select: '_id id name parentId image' }] },
 				]
 			}).exec();
 
@@ -200,5 +207,70 @@ export async function addCommentToThread(
 		revalidatePath(path);
 	} catch (error: any) {
 		throw new Error(`Failed to add comment to thread: ${error.message}`);
+	}
+}
+
+export async function likeThread(threadId: string, userId: string, path: string) {
+	connectToDB();
+
+	try {
+		console.log('like thread called', threadId, userId);
+
+		const thread = await Thread.findById(threadId);
+		const user = await User.findOne({ id: userId });
+
+		// console.log('thread received', thread);
+		// console.log('user received', user);
+
+		if (!thread || !user) {
+			throw new Error('Thread not found');
+		}
+
+		if (thread.likes.includes(user._id)) {
+			thread.likes = thread.likes.filter((like: string) => like !== user._id);
+		} else {
+			thread.likes.push(user._id);
+		}
+
+		await thread.save();
+
+		revalidatePath(path);
+	} catch (error: any) {
+		throw new Error(`Failed to like thread: ${error.message}`);
+	}
+}
+
+export async function unlikeThread(threadId: string, userId: string, path: string) {
+	connectToDB();
+
+	try {
+		console.log('unlike thread called', threadId, userId);
+		const thread = await Thread.findById(threadId)
+		.populate(
+			{
+				path: 'likes',
+				model: User,
+				select: '_id id '
+			}
+		);
+		const user = await User.findOne({ id: userId });
+
+		console.log('thread received', thread);
+		// console.log('user received', user);
+
+		if (!thread || !user) {
+			throw new Error('Thread not found');
+		}
+
+		const updateThread = thread.likes.filter((like: any) => like.id !== user.id);
+
+		//save updated thread
+		thread.likes = updateThread;
+
+		await thread.save();
+
+		revalidatePath(path);
+	} catch (error: any) {
+		throw new Error(`Failed to unlike thread: ${error.message}`);
 	}
 }

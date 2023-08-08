@@ -20,7 +20,10 @@ const page = async ({
 
 	if (!userInfo?.onboarded) redirect('/onboarding');
 
-	// console.log('searchParams======>', searchParams);
+	// check if searchParams.q has @ as the first character and if it does, remove it
+	if (searchParams.q?.charAt(0) === '@') {
+		searchParams.q = searchParams.q.slice(1);
+	}
 
 	const result = await fetchUsers({
 		userId: user.id,
@@ -28,8 +31,6 @@ const page = async ({
 		pageNumber: searchParams.page ? +searchParams.page : 1,
 		pageSize: 25,
 	});
-
-	console.log('result======>', result);
 
 	return (
 		<section>

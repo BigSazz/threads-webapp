@@ -8,6 +8,8 @@ import { currentUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 
+export const revalidate = 0;
+
 const Page = async ({ params }: { params: { id: string } }) => {
 	const user = await currentUser();
 
