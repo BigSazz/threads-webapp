@@ -18,13 +18,13 @@ const LikeThread = ({ threadId, likes, currentUserId }: Props) => {
 	const userAlreadyLiked = likes?.filter((like) => like.id === currentUserId);
 	const hasLiked = Boolean(userAlreadyLiked.length);
 
-	console.log(
-		'LikeThread ============> got here',
-		likes,
-		// currentUserId,
-		userAlreadyLiked
-		// threadId
-	);
+	// console.log(
+	// 	'LikeThread ============> got here',
+	// 	likes,
+	// 	currentUserId,
+	// 	userAlreadyLiked
+	//	threadId
+	// );
 
 	return (
 		<>
